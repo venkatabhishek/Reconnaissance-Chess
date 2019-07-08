@@ -1,0 +1,26 @@
+{
+  "name": "reconnaissance-chess",
+  "version": "1.0.0",
+  "description": "Special chess variation",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/venkatabhishek/Reconnaissance-Chess.git"
+  },
+  "keywords": [
+    "chess"
+  ],
+  "author": "Abhishek Venkat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/venkatabhishek/Reconnaissance-Chess/issues"
+  },
+  "homepage": "https://github.com/venkatabhishek/Reconnaissance-Chess#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
