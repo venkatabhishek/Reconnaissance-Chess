@@ -11,3 +11,13 @@ html, body{
     left: 0;
     margin: auto;
 }
+
+.small{
+    width: 400px;
+    display: inline-block;
+}
+
+.highlight{
+    box-shadow: inset 0 0 3px 3px yellow;
+}
+
