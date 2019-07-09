@@ -4,7 +4,7 @@
   "description": "Special chess variation",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "./node_modules/.bin/nodemon index.js",
     "start": "node index.js"
   },
   "repository": {

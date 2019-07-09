@@ -28,14 +28,6 @@ function addHighlight(square) {
             }
         }
     }
-
-
-
-
-
-
-
-
 }
 
 function onMouseoverSquare(square, piece) {

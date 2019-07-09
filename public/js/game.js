@@ -2,13 +2,63 @@ $(document).ready(function() {
 
     var board = null
     var game = null
+    var stage = null
+
+    let alpha = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
     const urlParams = new URLSearchParams(window.location.search);
     const q = urlParams.get('q');
 
     var socket = io();
 
+    // helpers
+
+    function removeHighlight() {
+        $('#board .square-55d63').removeClass('highlight')
+    }
+
+    function addHighlight(square) {
+
+        var let = alpha.indexOf(square.charAt(0)) - 1
+        var num = parseInt(square.charAt(1)) - 1;
+
+        for (var i = let; i < let + 3; i++) {
+            for (var j = num; j < num + 3; j++) {
+                try {
+                    var $square = $('#board .square-' + alpha[i] + j);
+                    $square.addClass('highlight')
+                } catch (err) {
+
+                }
+            }
+        }
+    }
+
     // board listeners
+
+    function onMouseoverSquare(square, piece) {
+
+
+        if (stage == "scout") {
+
+            addHighlight(square)
+        }
+
+    }
+
+    function onMouseoutSquare(square, piece) {
+        removeHighlight()
+    }
+
+    // scout click
+
+    $(document).on("click", ".square-55d63", function(e){
+
+        if(stage == "scout"){
+
+            console.log($(e.target).data('square'))
+        }
+    })
 
     function onDrop(source, target) {
 
@@ -39,7 +89,7 @@ $(document).ready(function() {
     })
 
     // start game
-    socket.on('start', function( side ) {
+    socket.on('start', function(side) {
         // remove wait status
         $("#wait").css('display', 'none');
 
@@ -47,20 +97,25 @@ $(document).ready(function() {
 
         $("#board").css('display', 'block')
 
+        game = new Chess();
+        stage = "scout"
+
         board = Chessboard('board', {
             draggable: true,
             pieceTheme: 'img/{piece}.png',
             position: "start",
             orientation: side == 0 ? "white" : "black",
-            onDrop: onDrop
+            onDrop: onDrop,
+            onMouseoutSquare: onMouseoutSquare,
+            onMouseoverSquare: onMouseoverSquare,
         })
 
-        game = new Chess();
+
 
     })
 
     // opponent move
-    socket.on('move', function(fen){
+    socket.on('move', function(fen) {
         board.position(fen)
         var success = game.load(fen)
         console.log(success)

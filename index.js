@@ -83,6 +83,10 @@ io.on('connection', function(socket) {
         }
     })
 
+    socket.on('scout', function(square){
+
+    })
+
     socket.on('disconnect', function() {
         if (games.hasOwnProperty(room)) {
             var index = games[room].players.indexOf(socket.id)
