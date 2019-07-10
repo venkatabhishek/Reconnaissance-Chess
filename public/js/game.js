@@ -12,7 +12,7 @@ $(document).ready(function() {
     var turnStage = $('#turnStage')
     var update = $("#update")
 
-    var socket = io();
+    var socket = io('/game');
 
     // helpers
 
@@ -43,12 +43,6 @@ $(document).ready(function() {
 
         // only pick if it is the play stage
         if (stage != "play") {
-            return false
-        }
-
-        // only pick up pieces for the side to move
-        if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-            (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
             return false
         }
     }
@@ -110,8 +104,16 @@ $(document).ready(function() {
 
     })
 
-    function onDrop(source, target) {
+    function onDrop(source, target, piece, newPos, oldPos, orientation) {
 
+        if (source == "spare" || target == "offboard") {
+            return true
+        }
+
+        if ((orientation == "white" && piece.charAt(0) == 'b') ||
+            (orientation == "black" ** piece.charAt(0) == 'w')) {
+            return true;
+        }
 
 
         var move = game.move({
@@ -121,19 +123,16 @@ $(document).ready(function() {
         })
 
         // illegal move
-        if (move === null && source != "spare" && target != "offboard") {
+        if (move === null) {
             return 'snapback'
         } else {
             stage = "wait"
             turnStage.html("Waiting for opponent...")
 
-
-
-
             socket.emit('move', {
                 source,
                 target,
-                captured
+                captured: move.captured
             })
         }
 

@@ -7,12 +7,15 @@ const port = process.env.PORT || 3000;
 
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var gameio = io.of('/game')
+var adminio = io.of('/admin')
 
 app.use(express.static('public'))
 
 // game data
 
 let games = {}
+let admin = {}
 
 app.get('/admin', (req, res) => {
     res.json(games)
@@ -29,6 +32,8 @@ app.get('/temp', (req, res) => {
         status: "waiting"
     }
 
+    admin[id] = []
+
     res.redirect('/game?q=' + id)
 })
 
@@ -38,7 +43,11 @@ app.get('/game', (req, res) => {
     res.sendFile(path.join(__dirname, "public/game.html"))
 })
 
-io.on('connection', function(socket) {
+adminio.on('connection', function(socket){
+
+})
+
+gameio.on('connection', function(socket) {
     console.log('a user connected');
     var room = null;
 
@@ -62,7 +71,7 @@ io.on('connection', function(socket) {
 
 
                     games[id].players.forEach(function(playerId, index) {
-                        io.to(`${playerId}`).emit('start', index);
+                        gameio.to(`${playerId}`).emit('start', index);
                     })
 
                 }
