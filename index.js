@@ -58,7 +58,8 @@ io.on('connection', function(socket) {
 
                     games[id].status = "playing"
                     // fen for starting board
-                    games[id].state = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                    games[id].state = new Chess()
+
 
                     games[id].players.forEach(function(playerId, index) {
                         io.to(`${playerId}`).emit('start', index);
@@ -75,17 +76,26 @@ io.on('connection', function(socket) {
 
     })
 
-    socket.on('move', function(fen){
+    socket.on('move', function(move){
         if(games.hasOwnProperty(room)){
-            games[room].state = fen;
+            games[room].state.move({
+            from: move.source,
+            to: move.target,
+            promotion: 'q' // NOTE: always promote to a queen for example simplicity
+        })
 
-            socket.to(room).emit('move', fen);
+        var res = {
+            fen: games[room].state.fen(),
+        }
+
+        if(move.captured){
+            res['reveal'] = move.target;
+        }
+
+            socket.to(room).emit('move', res);
         }
     })
 
-    socket.on('scout', function(square){
-
-    })
 
     socket.on('disconnect', function() {
         if (games.hasOwnProperty(room)) {

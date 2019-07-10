@@ -1,13 +1,16 @@
 $(document).ready(function() {
 
-    var board = null
-    var game = null
+    var board = null // represents player view
+    var game = null // represents truth
     var stage = null
 
     let alpha = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
     const urlParams = new URLSearchParams(window.location.search);
     const q = urlParams.get('q');
+
+    var turnStage = $('#turnStage')
+    var update = $("#update")
 
     var socket = io();
 
@@ -36,6 +39,20 @@ $(document).ready(function() {
 
     // board listeners
 
+    function onDragStart(source, piece, position, orientation) {
+
+        // only pick if it is the play stage
+        if (stage != "play") {
+            return false
+        }
+
+        // only pick up pieces for the side to move
+        if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+            (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+            return false
+        }
+    }
+
     function onMouseoverSquare(square, piece) {
 
 
@@ -52,15 +69,50 @@ $(document).ready(function() {
 
     // scout click
 
-    $(document).on("click", ".square-55d63", function(e){
+    $(document).on("click", ".square-55d63", function(e) {
 
-        if(stage == "scout"){
+        if (stage == "scout") {
 
-            console.log($(e.target).data('square'))
+
+            var square = $(e.currentTarget).data('square')
+
+            var position = board.position()
+
+            // reveal 3x3
+
+            var let = alpha.indexOf(square.charAt(0)) - 1
+            var num = parseInt(square.charAt(1)) - 1;
+
+            for (var i = let; i < let + 3; i++) {
+                for (var j = num; j < num + 3; j++) {
+                    try {
+                        var tempSquare = alpha[i] + j
+                        var truthPiece = game.get(tempSquare)
+
+                        if (truthPiece) {
+                            position[tempSquare] = truthPiece.color + (truthPiece.type).toUpperCase()
+                        } else {
+                            delete position[tempSquare]
+                        }
+
+                    } catch (err) {
+
+                    }
+                }
+            }
+
+            removeHighlight()
+            board.position(position)
+            stage = "play"
+            turnStage.html('Play phase')
+
         }
+
     })
 
     function onDrop(source, target) {
+
+
 
         var move = game.move({
             from: source,
@@ -69,9 +121,21 @@ $(document).ready(function() {
         })
 
         // illegal move
-        if (move === null) return 'snapback'
+        if (move === null && source != "spare" && target != "offboard") {
+            return 'snapback'
+        } else {
+            stage = "wait"
+            turnStage.html("Waiting for opponent...")
 
-        socket.emit('move', game.fen())
+
+
+
+            socket.emit('move', {
+                source,
+                target,
+                captured
+            })
+        }
 
     }
 
@@ -95,19 +159,29 @@ $(document).ready(function() {
 
         // create board
 
-        $("#board").css('display', 'block')
+        $(".board-wrapper").css('display', 'block')
 
         game = new Chess();
-        stage = "scout"
+        if (side == 0) {
+            stage = "scout"
+            turnStage.html('Scouting phase')
+        } else {
+            stage = "wait"
+            turnStage.html('Waiting for opponent')
+        }
+
 
         board = Chessboard('board', {
             draggable: true,
             pieceTheme: 'img/{piece}.png',
             position: "start",
+            dropOffBoard: 'trash',
+            sparePieces: true,
             orientation: side == 0 ? "white" : "black",
             onDrop: onDrop,
             onMouseoutSquare: onMouseoutSquare,
             onMouseoverSquare: onMouseoverSquare,
+            onDragStart: onDragStart
         })
 
 
@@ -115,10 +189,23 @@ $(document).ready(function() {
     })
 
     // opponent move
-    socket.on('move', function(fen) {
-        board.position(fen)
-        var success = game.load(fen)
+    socket.on('move', function(data) {
+        // reveal opponents move
+        // board.position(fen)
+
+        // reveal if piece captured
+        if (data.reveal) {
+            update.html("Your opponent has captured a piece! It was removed")
+            var position = board.position()
+
+            delete position[data.reveal]
+            board.position(position)
+        }
+
+        var success = game.load(data.fen)
         console.log(success)
+        stage = "scout"
+        turnStage.html('Scouting phase')
     })
 
 
