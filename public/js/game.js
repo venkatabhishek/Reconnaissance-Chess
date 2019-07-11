@@ -172,7 +172,7 @@ $(document).ready(function() {
 
         board = Chessboard('board', {
             draggable: true,
-            pieceTheme: 'img/{piece}.png',
+            pieceTheme: 'img/chess/{piece}.png',
             position: "start",
             dropOffBoard: 'trash',
             sparePieces: true,

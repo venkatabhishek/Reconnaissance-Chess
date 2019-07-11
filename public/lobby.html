@@ -1,20 +1,82 @@
 <html>
 
 <head>
-	<title>Lobby</title>
+	<title>Recon Chess Lobby</title>
+	<link rel="stylesheet" href="/css/hamburgers.css">
+	<link rel="stylesheet" href="/css/index.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-<h1>LOBBY</h1>
+	<div id="mySidenav" class="sidenav">
+					<a href="/howtoplay.html">How to Play</a>
+					<a href="https://secwww.jhuapl.edu/ReconBlindChess/faqs/rulesOfTheGame">Rules</a>
+					<a href="https://github.com/venkatabhishek/Reconnaissance-Chess">Code</a>
+	</div>
 
-<button id="start">Start New Game</button>
+    <div class="mainContent">
+	<div class="nav">
+		<div class="linksWrapper">
+			<div class="links">
+				<ul class="listLinks">
+					<li><a href="/howtoplay.html">How to Play</a></li>
+					<li><a href="https://secwww.jhuapl.edu/ReconBlindChess/faqs/rulesOfTheGame">Rules</a></li>
+					<li><a href="https://github.com/venkatabhishek/Reconnaissance-Chess">Code</a></li>
+				</ul>
+				<div class="mobileLinks">
+					<div class="hamburger hamburger--slider" type="button">
+						<div class="hamburger-box">
+							<div class="hamburger-inner"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="main">
+		<div class="info">
+			<div class="logo">
+				<div class="square"></div>
+			</div>
+			<h1>A node.js implementation of Reconnaissance <br /> Blind Chess, a variant of generic chess</h1>
+            <div>
+                <div id="start">Create a new game!</div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+<div style="font-size: 12px;" class="credit">Icons made by <a href="https://www.flaticon.com/authors/zlatko-najdenovski" title="Zlatko Najdenovski">Zlatko Najdenovski</a> from <a href="https://www.flaticon.com/"     title="Flaticon">www.flaticon.com</a> messages.attribution.is_licensed_by <a href="http://creativecommons.org/licenses/by/3.0/"     title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
 <script>
+
+var hamburger = document.querySelector(".hamburger");
+var mainContent = document.querySelector(".mainContent");
+var sideNav = document.getElementById("mySidenav");
+
+mainContent.addEventListener("click", function(e){
+    if(sideNav.classList.contains('open')){
+        sideNav.classList.remove('open')
+        hamburger.classList.remove('is-active')
+    }
+
+})
+
+hamburger.addEventListener("click", function(e){
+    hamburger.classList.toggle('is-active')
+    sideNav.classList.toggle('open')
+    e.stopPropagation();
+})
+
 document.getElementById("start").addEventListener("click", function(){
     window.location = '/temp'
 })
 </script>
+
+
 
 </body>
 

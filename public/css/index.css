@@ -1,23 +1,151 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 html, body{
     margin: 0;
-    background: #f5f5f5;
+    background: #ff5252 url(/img/lobby.png);
+    background-size: contain;
+    font-family: 'Roboto', sans-serif;
+    color: white;
 }
 
-#board{
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: auto;
+.nav{
+    height: 120px;
+    width: 100vw;
 }
 
-.small{
-    width: 400px;
+a{
+    text-decoration: none;
+    color: white;
+}
+
+ul{
+    list-style-type: none;
+    display: flex;
+}
+
+li{
+    padding: 0 15px;
+}
+
+.linksWrapper{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.links{
+    margin-left: auto;
+    padding: 0 80px;
+    font-size: 28px;
+}
+
+.main{
+    min-height: calc((100vh - 120px) - 100px);
+    display: flex;
+    align-items: center;
+}
+
+.info{
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 40px;
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+
+}
+
+.square{
+    background: white;
+    width: 80px;
+    height: 80px;
+    padding: 20px;
+}
+
+h1{
+    font-weight: normal;
+    margin-bottom: 50px;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+#start{
+    background: white;
+    color: black;
+    padding: 30px;
+    cursor: pointer;
     display: inline-block;
+    border-radius: 5px;
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
-.highlight{
-    box-shadow: inset 0 0 3px 3px yellow;
+.open{
+    width: 250px;
 }
 
+.mobileLinks{
+    display: none;
+}
+
+.hamburger{
+    border: none !important;
+    outline: none !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.credit{
+    position: absolute;
+    bottom: 0;
+    padding: 5px;
+}
+
+@media only screen and (max-width: 768px){
+    .listLinks{
+        display: none;
+    }
+    .mobileLinks{
+        display: block;
+    }
+    .links{
+        padding: 0 35px;
+    }
+    .credit{
+        position: relative;
+    }
+
+}
