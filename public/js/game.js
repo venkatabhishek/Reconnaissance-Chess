@@ -120,7 +120,9 @@ $(document).ready(function() {
             from: source,
             to: target,
             promotion: 'q' // NOTE: always promote to a queen for example simplicity
-        })
+        }, { sloppy: true })
+
+        console.log(move)
 
         // illegal move
         if (move === null) {
