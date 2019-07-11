@@ -1,6 +1,6 @@
 # Reconnaissance Blind Chess
 
-A node.js version of the the modified chess format
+A node.js version of a chess game variant
 
 ### How to Play
 
