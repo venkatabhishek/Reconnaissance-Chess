@@ -48,7 +48,6 @@ adminio.on('connection', function(socket){
 })
 
 gameio.on('connection', function(socket) {
-    console.log('a user connected');
     var room = null;
 
     socket.on('join', function(id) {

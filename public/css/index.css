@@ -39,7 +39,7 @@ li{
 }
 
 .main{
-    min-height: calc((100vh - 120px) - 100px);
+    min-height: calc((100vh - 120px) - 120px);
     display: flex;
     align-items: center;
 }
@@ -134,6 +134,10 @@ h1{
     padding: 5px;
 }
 
+img{
+    width: 400px;
+}
+
 @media only screen and (max-width: 768px){
     .listLinks{
         display: none;
@@ -147,5 +151,7 @@ h1{
     .credit{
         position: relative;
     }
-
+    img{
+        width: 200px;
+    }
 }
