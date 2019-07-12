@@ -4,7 +4,7 @@ A node.js version of a chess game variant
 
 ### How to Play
 
-1. Go the the home page and click the button to create a new game
+1. Go the the [home page](https://reconnaissanceblindchess-xozoixdgij.now.sh/) and click the button to create a new game
 
 2. Copy the url and share with your opponent
 
