@@ -111,7 +111,7 @@ $(document).ready(function() {
         }
 
         if ((orientation == "white" && piece.charAt(0) == 'b') ||
-            (orientation == "black" ** piece.charAt(0) == 'w')) {
+            (orientation == "black" && piece.charAt(0) == 'w')) {
             return true;
         }
 
@@ -121,8 +121,6 @@ $(document).ready(function() {
             to: target,
             promotion: 'q' // NOTE: always promote to a queen for example simplicity
         }, { sloppy: true })
-
-        console.log(move)
 
         // illegal move
         if (move === null) {
@@ -134,7 +132,8 @@ $(document).ready(function() {
             socket.emit('move', {
                 source,
                 target,
-                captured: move.captured
+                captured: move.captured,
+                color: move.color
             })
         }
 
@@ -151,6 +150,16 @@ $(document).ready(function() {
     // status update
     socket.on('status', function(msg) {
         $("#status").html(msg)
+    })
+
+    // game over
+    socket.on('winner', function(winner){
+        if(winner == board.orientation().charAt(0)){
+            $("#winner").html("Congrats! You Won!")
+        }else{
+            $("#winner").html("Sorry! You Lost!")
+        }
+
     })
 
     // start game
@@ -201,10 +210,10 @@ $(document).ready(function() {
 
             delete position[data.reveal]
             board.position(position)
+
         }
 
         var success = game.load(data.fen)
-        console.log(success)
         stage = "scout"
         turnStage.html('Scouting phase')
     })

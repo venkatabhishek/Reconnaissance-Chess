@@ -1,7 +1,7 @@
 {
   "name": "reconnaissance-chess",
   "version": "1.0.0",
-  "description": "Special chess variation",
+  "description": "Special blind chess variation",
   "main": "index.js",
   "scripts": {
     "dev": "./node_modules/.bin/nodemon index.js",

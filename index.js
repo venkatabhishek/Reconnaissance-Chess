@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 const uuidv1 = require('uuid/v1');
-var Chess = require('chess.js').Chess;
+var Chess = require('./chess.js').Chess;
 const app = express()
 const port = process.env.PORT || 3000;
 
@@ -98,6 +98,9 @@ gameio.on('connection', function(socket) {
 
         if(move.captured){
             res['reveal'] = move.target;
+            if(move.captured == 'k'){
+                gameio.in(room).emit('winner', move.color)
+            }
         }
 
             socket.to(room).emit('move', res);
@@ -122,4 +125,4 @@ gameio.on('connection', function(socket) {
 });
 
 
-http.listen(port, () => console.log(`Example app listening on port ${port}!`))
+http.listen(port, () => console.log(`App listening on port ${port}!`))
