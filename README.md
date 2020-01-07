@@ -10,4 +10,4 @@ A node.js version of a chess game variant
 
 3. Play!
 
-More information about rules of the game/how to play can be found [here](https://secwww.jhuapl.edu/ReconBlindChess/)
+More information about rules of the game/how to play can be found [here](https://reconchess.readthedocs.io/en/latest/rules.html)
